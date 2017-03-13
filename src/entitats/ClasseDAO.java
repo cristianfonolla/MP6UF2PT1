@@ -5,6 +5,7 @@
  */
 package entitats;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -13,19 +14,25 @@ import utils.HibernateUtil;
 
 /**
  *
- * @author cristian
+ * @author alumne
  */
-public class JugadorsDAO {
+public class ClasseDAO<T> {
 
     private Session sesion;
     private Transaction tx;
 
-    public long guardaJugador(Jugador jugador) throws HibernateException {
+    private Class p;
+
+    public ClasseDAO(Class<T> p) {
+        this.p = p;
+    }
+
+    public long guarda(T objecte) throws HibernateException {
         long id = 0;
 
         try {
             iniciaOperacio();
-            id = (Long) sesion.save(jugador);
+            id = Long.parseLong(String.valueOf(sesion.save(objecte)));
             tx.commit();
         } catch (HibernateException he) {
             tractaExcepcio(he);
@@ -37,10 +44,10 @@ public class JugadorsDAO {
         return id;
     }
 
-    public void actualitzaJugador(Jugador jugador) throws HibernateException {
+    public void actualitza(T objecte) throws HibernateException {
         try {
             iniciaOperacio();
-            sesion.update(jugador);
+            sesion.update(objecte);
             tx.commit();
         } catch (HibernateException he) {
             tractaExcepcio(he);
@@ -50,10 +57,10 @@ public class JugadorsDAO {
         }
     }
 
-    public void eliminaJugador(Jugador jugador) throws HibernateException {
+    public void elimina(T objecte) throws HibernateException {
         try {
             iniciaOperacio();
-            sesion.delete(jugador);
+            sesion.delete(objecte);
             tx.commit();
         } catch (HibernateException he) {
             tractaExcepcio(he);
@@ -63,30 +70,28 @@ public class JugadorsDAO {
         }
     }
 
-    public Jugador obtenJugador(long idJugador) throws HibernateException {
-        Jugador jugador = null;
+    public T obte(int idObjecte) throws HibernateException {
+        T objecte = null;
         try {
             iniciaOperacio();
-            jugador = (Jugador) sesion.get(Jugador.class, idJugador);
+            objecte = (T) sesion.get(p, idObjecte);
         } finally {
             sesion.close();
         }
 
-        return jugador;
+        return objecte;
     }
 
-    public List obtenLlistaJugador() throws HibernateException {
-
-        List llistaJugador = null;
-
+    public List<T> obtenLlista() throws HibernateException {
+        ArrayList<T> llista = new ArrayList<>();
         try {
             iniciaOperacio();
-            llistaJugador = sesion.createQuery("from Jugador").list();
+            llista = (ArrayList) sesion.createQuery("from " + p.getSimpleName()).list();
         } finally {
             sesion.close();
         }
 
-        return llistaJugador;
+        return llista;
     }
 
     private void iniciaOperacio() throws HibernateException {
@@ -98,28 +103,4 @@ public class JugadorsDAO {
         tx.rollback();
         throw new HibernateException("Error a la capa d'accés a dades", he);
     }
-
 }
-
-//    Jugador jugador;
-//
-//    public Entitat() {
-//        
-//    }
-//
-//    private void crearJugador(String nom, String email, String telefon) {
-//        Session session;
-//        Transaction tx;
-//
-//        session = HibernateUtil.getSessionFactory().openSession();
-//        tx = session.beginTransaction();
-//
-//        //Jugador j = new Jugador(nom, email, telefon);
-//
-//        //session.save(j);
-//
-//        tx.commit();
-//        session.close();
-//        System.exit(0);
-//    }
-

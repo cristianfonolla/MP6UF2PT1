@@ -7,7 +7,6 @@ package Main;
 
 import entitats.Equip;
 import entitats.Jugador;
-import entitats.JugadorsDAO;
 import entitats.Torneig;
 import java.util.ArrayList;
 
@@ -26,7 +25,7 @@ public class Main {
 //        long idAEliminar = 0;
 
         Jugador jugador1 = new Jugador("Cristian", "cris@gmail.com", "646585985");
-        Equip equip1 = new Equip("Roquetes", 1, jugador1);        
+        Equip equip1 = new Equip("Roquetes", 1, jugador1);
         equip1.getJugadors().add(jugador1);
         ArrayList<Equip> alE = new ArrayList<>();
         alE.add(equip1);
