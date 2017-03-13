@@ -70,7 +70,7 @@ public class ClasseDAO<T> {
         }
     }
 
-    public T obte(int idObjecte) throws HibernateException {
+    public T obte(long idObjecte) throws HibernateException {
         T objecte = null;
         try {
             iniciaOperacio();
