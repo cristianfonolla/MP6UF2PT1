@@ -38,6 +38,11 @@ public class Equip {
     public Equip() {
     }
 
+    public Equip(String nomEquip, int classificacio) {
+        this.nomEquip = nomEquip;
+        this.classificacio = classificacio;
+    }
+
     public Equip(String nomEquip, int classificacio, Jugador capita) {
         this.nomEquip = nomEquip;
         this.classificacio = classificacio;
@@ -86,7 +91,7 @@ public class Equip {
 
     @Override
     public String toString() {
-        return "Equip{" + "idEquip=" + idEquip + ", nomEquip=" + nomEquip + ", Classificacio=" + classificacio + ", capita=" + capita + ", jugadors=" + jugadors + ", tornejos=" + tornejos + '}';
+        return "Equip{" + nomEquip + '}';
     }
 
 }

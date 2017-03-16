@@ -23,69 +23,67 @@ public class Jugador {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long _1_id;
 
-    private String nom;
+    private String _2_nom;
 
-    private String email;
+    private String _3_email;
 
-    private String telefon;
+    private String _4_telefon;
 
-    @Transient
-    private Equip equip = new Equip();
-
+    //@Transient
+    //private Equip _5_equip = new Equip();
     public Jugador() {
     }
 
-    public Jugador(String nom, String email, String telefon) {
-        this.nom = nom;
-        this.email = email;
-        this.telefon = telefon;
+    public Jugador(String _2_nom, String _3_email, String _4_telefon) {
+        this._2_nom = _2_nom;
+        this._3_email = _3_email;
+        this._4_telefon = _4_telefon;
     }
 
-    public long getId() {
-        return id;
+    public long get1_id() {
+        return _1_id;
     }
 
-    private void setId(long id) {
-        this.id = id;
+    public void set1_id(long _1_id) {
+        this._1_id = _1_id;
     }
 
-    public String getNom() {
-        return nom;
+    public String get2_nom() {
+        return _2_nom;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void set2_nom(String _2_nom) {
+        this._2_nom = _2_nom;
     }
 
-    public String getEmail() {
-        return email;
+    public String get3_email() {
+        return _3_email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void set3_email(String _3_email) {
+        this._3_email = _3_email;
     }
 
-    public String getTelefon() {
-        return telefon;
+    public String get4_telefon() {
+        return _4_telefon;
     }
 
-    public void setTelefon(String telefon) {
-        this.telefon = telefon;
+    public void set4_telefon(String _4_telefon) {
+        this._4_telefon = _4_telefon;
     }
 
-    public Equip getEquip() {
-        return equip;
-    }
-
-    public void setEquip(Equip equip) {
-        this.equip = equip;
-    }
-
+//    public Equip get5_equip() {
+//        return _5_equip;
+//    }
+//
+//    public void set5_equip(Equip _5_equip) {
+//        this._5_equip = _5_equip;
+//    }
     @Override
     public String toString() {
-        return "Jugador{" + "id=" + id + ", nom=" + nom + ", email=" + email + ", telefon=" + telefon + ", equip=" + equip + '}';
+        return "Jugador{" + "_1_id=" + _1_id + ", _2_nom=" + _2_nom + ", _3_email=" + _3_email + ", _4_telefon=" + _4_telefon + ", _5_equip=" + '}';
     }
 
 }
