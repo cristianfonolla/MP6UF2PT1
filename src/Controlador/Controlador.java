@@ -275,7 +275,7 @@ public class Controlador {
                             }
                         }
                         if (permis == 1) {
-                            System.out.println(permis + " : 1");
+                            
                             TableColumnModel tcm = vistaEquips.getjTable1().getColumnModel();
                             tcm.addColumn(tableColumnEquip);
                             Equip e1 = (Equip) vistaEquips.getjTable1().getValueAt(vistaEquips.getjTable1().getSelectedRow(), vistaEquips.getjTable1().getColumnCount() - 1);
@@ -290,7 +290,7 @@ public class Controlador {
                             JOptionPane.showMessageDialog(null, "El jugador que has introduit ia es capità d'un altre equip, "
                                     + "selecciona un altre!");
                         } else if (permis == 2) {
-                            System.out.println("a");
+                            
                             TableColumnModel tcm = vistaEquips.getjTable1().getColumnModel();
                             tcm.addColumn(tableColumnEquip);
                             Equip e1 = (Equip) vistaEquips.getjTable1().getValueAt(vistaEquips.getjTable1().getSelectedRow(), vistaEquips.getjTable1().getColumnCount() - 1);
