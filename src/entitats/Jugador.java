@@ -83,7 +83,7 @@ public class Jugador {
 //    }
     @Override
     public String toString() {
-        return "Jugador{" + "_1_id=" + _1_id + ", _2_nom=" + _2_nom + ", _3_email=" + _3_email + ", _4_telefon=" + _4_telefon + ", _5_equip=" + '}';
+        return _2_nom + "," + _3_email;
     }
 
 }

@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -23,75 +24,83 @@ public class Equip {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idEquip;
+    private long _1_idEquip;
 
-    private String nomEquip;
+    private String _2_nomEquip;
 
-    private int classificacio;
-    @Transient
-    private Jugador capita;
-    @Transient
-    private ArrayList<Jugador> jugadors = new ArrayList<>();
-    @Transient
-    private ArrayList<Torneig> tornejos = new ArrayList<>();
+    private int _3_classificacio;
+    @OneToOne(optional = false)
+    private Jugador _4_capita;
+//    @Transient
+//    private ArrayList<Jugador> jugadors = new ArrayList<>();
+//    @Transient
+//    private ArrayList<Torneig> tornejos = new ArrayList<>();
 
     public Equip() {
     }
 
-    public Equip(String nomEquip, int classificacio) {
-        this.nomEquip = nomEquip;
-        this.classificacio = classificacio;
+    public Equip(String _2_nomEquip, int _3_classificacio) {
+        this._2_nomEquip = _2_nomEquip;
+        this._3_classificacio = _3_classificacio;
     }
 
-    public Equip(String nomEquip, int classificacio, Jugador capita) {
-        this.nomEquip = nomEquip;
-        this.classificacio = classificacio;
-        this.capita = capita;
+    public Equip(String _2_nomEquip, int _3_classificacio, Jugador _4_capita) {
+        this._2_nomEquip = _2_nomEquip;
+        this._3_classificacio = _3_classificacio;
+        this._4_capita = _4_capita;
     }
 
-    public String getNomEquip() {
-        return nomEquip;
+    public long get1_idEquip() {
+        return _1_idEquip;
     }
 
-    public void setNomEquip(String nomEquip) {
-        this.nomEquip = nomEquip;
+    public void set1_idEquip(long _1_idEquip) {
+        this._1_idEquip = _1_idEquip;
     }
 
-    public int getClassificacio() {
-        return classificacio;
+    public String get2_nomEquip() {
+        return _2_nomEquip;
     }
 
-    public void setClassificacio(int classificacio) {
-        this.classificacio = classificacio;
+    public void set2_nomEquip(String _2_nomEquip) {
+        this._2_nomEquip = _2_nomEquip;
     }
 
-    public Jugador getCapita() {
-        return capita;
+    public int get3_classificacio() {
+        return _3_classificacio;
     }
 
-    public void setCapita(Jugador capita) {
-        this.capita = capita;
+    public void set3_classificacio(int _3_classificacio) {
+        this._3_classificacio = _3_classificacio;
     }
 
-    public ArrayList<Jugador> getJugadors() {
-        return jugadors;
+    public Jugador get4_capita() {
+        return _4_capita;
     }
 
-    public void setJugadors(ArrayList<Jugador> jugadors) {
-        this.jugadors = jugadors;
+    public void set4_capita(Jugador _4_capita) {
+        this._4_capita = _4_capita;
     }
 
-    public ArrayList<Torneig> getTornejos() {
-        return tornejos;
-    }
-
-    public void setTornejos(ArrayList<Torneig> tornejos) {
-        this.tornejos = tornejos;
-    }
+//    public ArrayList<Jugador> getJugadors() {
+//        return jugadors;
+//    }
+//
+//    public void setJugadors(ArrayList<Jugador> jugadors) {
+//        this.jugadors = jugadors;
+//    }
+//
+//    public ArrayList<Torneig> getTornejos() {
+//        return tornejos;
+//    }
+//
+//    public void setTornejos(ArrayList<Torneig> tornejos) {
+//        this.tornejos = tornejos;
+//    }
 
     @Override
     public String toString() {
-        return "Equip{" + nomEquip + '}';
+        return "Equip{" + _2_nomEquip + '}';
     }
 
 }

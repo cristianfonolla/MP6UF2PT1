@@ -11,5 +11,6 @@
     <property name="hibernate.query.factory_class">org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory</property>
     <property name="hibernate.show_sql">true</property>
     <mapping class="entitats.Jugador"/>
+    <mapping class="entitats.Equip"/>
   </session-factory>
 </hibernate-configuration>

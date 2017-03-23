@@ -6,10 +6,10 @@
 package Main;
 
 import Controlador.Controlador;
-import Vista.Vista;
-import entitats.ClasseDAO;
-import entitats.Jugador;
-import java.util.List;
+import Vista.VistaEquips;
+import Vista.VistaGeneral;
+import Vista.VistaJugadors;
+import entitats.Model;
 
 /**
  *
@@ -17,12 +17,16 @@ import java.util.List;
  */
 public class NewMain {
 
-    static ClasseDAO modelJugador = new ClasseDAO(Jugador.class);
-    static Vista vista = new Vista();
+    static Model model = new Model();
+    static VistaJugadors vista = new VistaJugadors();
+    static VistaGeneral vistaGeneral = new VistaGeneral();
+    static VistaEquips vistaEquips = new VistaEquips();
 
     public static void main(String[] args) {
-        vista.setVisible(true);
-        new Controlador(modelJugador, vista);
+        vista.setVisible(false);
+        vistaEquips.setVisible(false);
+        vistaGeneral.setVisible(true);
+        new Controlador(model, vista, vistaGeneral, vistaEquips);
     }
 
     private static void inicivariables() {
