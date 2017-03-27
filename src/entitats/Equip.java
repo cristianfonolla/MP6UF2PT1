@@ -6,13 +6,14 @@
 package entitats;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  *
@@ -29,14 +30,19 @@ public class Equip {
     private String _2_nomEquip;
 
     private int _3_classificacio;
-    @OneToOne(optional = false)
+    @OneToOne(optional = true)
     private Jugador _4_capita;
-//    @Transient
-//    private ArrayList<Jugador> jugadors = new ArrayList<>();
+
+    @OneToMany(mappedBy = "_5_equip")
+    private Collection<Jugador> _5_jugadors = new ArrayList<>();
 //    @Transient
 //    private ArrayList<Torneig> tornejos = new ArrayList<>();
 
     public Equip() {
+    }
+
+    public Equip(String _2_nomEquip) {
+        this._2_nomEquip = _2_nomEquip;
     }
 
     public Equip(String _2_nomEquip, int _3_classificacio) {
@@ -82,25 +88,17 @@ public class Equip {
         this._4_capita = _4_capita;
     }
 
-//    public ArrayList<Jugador> getJugadors() {
-//        return jugadors;
-//    }
-//
-//    public void setJugadors(ArrayList<Jugador> jugadors) {
-//        this.jugadors = jugadors;
-//    }
-//
-//    public ArrayList<Torneig> getTornejos() {
-//        return tornejos;
-//    }
-//
-//    public void setTornejos(ArrayList<Torneig> tornejos) {
-//        this.tornejos = tornejos;
-//    }
+    public Collection<Jugador> get5_jugadors() {
+        return _5_jugadors;
+    }
+
+    public void set5_jugadors(ArrayList<Jugador> _5_jugadors) {
+        this._5_jugadors = _5_jugadors;
+    }
 
     @Override
     public String toString() {
-        return "Equip{" + _2_nomEquip + '}';
+        return _2_nomEquip;
     }
 
 }

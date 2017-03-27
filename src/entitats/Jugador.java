@@ -5,13 +5,14 @@
  */
 package entitats;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  *
@@ -31,15 +32,28 @@ public class Jugador {
 
     private String _4_telefon;
 
-    //@Transient
-    //private Equip _5_equip = new Equip();
+    @ManyToOne
+    @JoinColumn(name = "equip_id", nullable = true)
+    private Equip _5_equip = null;
+
     public Jugador() {
+    }
+
+    public Jugador(String _2_nom) {
+        this._2_nom = _2_nom;
     }
 
     public Jugador(String _2_nom, String _3_email, String _4_telefon) {
         this._2_nom = _2_nom;
         this._3_email = _3_email;
         this._4_telefon = _4_telefon;
+    }
+
+    public Jugador(String _2_nom, String _3_email, String _4_telefon, Equip _5_equip) {
+        this._2_nom = _2_nom;
+        this._3_email = _3_email;
+        this._4_telefon = _4_telefon;
+        this._5_equip = _5_equip;
     }
 
     public long get1_id() {
@@ -74,16 +88,18 @@ public class Jugador {
         this._4_telefon = _4_telefon;
     }
 
-//    public Equip get5_equip() {
-//        return _5_equip;
-//    }
-//
-//    public void set5_equip(Equip _5_equip) {
-//        this._5_equip = _5_equip;
-//    }
-    @Override
+    public Equip get5_equip() {
+        return _5_equip;
+    }
+
+    public void set5_equip(Equip _5_equip) {
+        this._5_equip = _5_equip;
+    }
+
     public String toString() {
-        return _2_nom + "," + _3_email;
+
+        return _2_nom;
+
     }
 
 }

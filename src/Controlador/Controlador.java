@@ -40,6 +40,9 @@ import org.hibernate.HibernateException;
  */
 public class Controlador {
 
+    /*
+    FAENA PER FER: ARA ESTIC FENT EL MODIFICA EQUIP PER AL APRETA MODIFICA POSAR EL CAPITAR A BUIT
+     */
     Model model;
     VistaJugadors vista;
     VistaGeneral vistaGeneral;
@@ -59,7 +62,11 @@ public class Controlador {
         this.vista = vista;
         this.vistaGeneral = vistaGeneral;
         this.vistaEquips = vistaEquips;
-        carregaCombo((ArrayList) model.getClasseDAOJugadors().obtenLlista(), vistaEquips.getjComboBox1());
+
+        carregaComboJugador(vista.getjComboBox1());
+        carregaComboEquip(vistaEquips.getjComboBox1());
+        carregaComboEquip(vistaEquips.getjComboBox2());
+
         tableColumnJugador = carregaTaula((ArrayList) model.getClasseDAOJugadors().obtenLlista(), vista.getjTable1(), Jugador.class);
         tableColumnEquip = carregaTaula((ArrayList) model.getClasseDAOEquips().obtenLlista(), vistaEquips.getjTable1(), Equip.class);
 
@@ -76,26 +83,54 @@ public class Controlador {
 
                     if (vista.getjTable1().getSelectedRow() != -1) {
 
-                        try {
+                        Equip eq = (Equip) vista.getjComboBox1().getSelectedItem();
 
-                            int numero = Integer.valueOf(vista.getjTextField3().getText());
+                        if (eq.get2_nomEquip().equals("BUIT")) {
+                            try {
 
-                            if (numero >= 600000000 && numero <= 999999999) {
-                                TableColumnModel tcm = vista.getjTable1().getColumnModel();
-                                tcm.addColumn(tableColumnJugador);
-                                Jugador j1 = (Jugador) vista.getjTable1().getValueAt(vista.getjTable1().getSelectedRow(), vista.getjTable1().getColumnCount() - 1);
-                                j1.set2_nom(vista.getjTextField1().getText());
-                                j1.set3_email(vista.getjTextField2().getText());
-                                j1.set4_telefon(vista.getjTextField3().getText());
-                                model.getClasseDAOJugadors().actualitza(j1);
-                                carregaTaula((ArrayList) model.getClasseDAOJugadors().obtenLlista(), vista.getjTable1(), Jugador.class);
-                                llimpiarCamps();
-                            } else {
-                                JOptionPane.showMessageDialog(null, "Introdueix un telefon correcte d'Espanya!!!");
+                                int numero = Integer.valueOf(vista.getjTextField3().getText());
+
+                                if (numero >= 600000000 && numero <= 999999999) {
+                                    TableColumnModel tcm = vista.getjTable1().getColumnModel();
+                                    tcm.addColumn(tableColumnJugador);
+                                    Jugador j1 = (Jugador) vista.getjTable1().getValueAt(vista.getjTable1().getSelectedRow(), vista.getjTable1().getColumnCount() - 1);
+                                    j1.set2_nom(vista.getjTextField1().getText());
+                                    j1.set3_email(vista.getjTextField2().getText());
+                                    j1.set4_telefon(vista.getjTextField3().getText());
+                                    j1.set5_equip(null);
+                                    model.getClasseDAOJugadors().actualitza(j1);
+                                    carregaTaula((ArrayList) model.getClasseDAOJugadors().obtenLlista(), vista.getjTable1(), Jugador.class);
+                                    llimpiarCamps();
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Introdueix un telefon correcte d'Espanya!!!");
+                                }
+
+                            } catch (NumberFormatException e) {
+                                JOptionPane.showMessageDialog(null, "Has d'introduir un telefon vàlid amb format de 9 digits XXXXXXXXX");
                             }
+                        } else {
+                            try {
 
-                        } catch (NumberFormatException e) {
-                            JOptionPane.showMessageDialog(null, "Has d'introduir un telefon vàlid amb format de 9 digits XXXXXXXXX");
+                                int numero = Integer.valueOf(vista.getjTextField3().getText());
+
+                                if (numero >= 600000000 && numero <= 999999999) {
+                                    TableColumnModel tcm = vista.getjTable1().getColumnModel();
+                                    tcm.addColumn(tableColumnJugador);
+                                    Jugador j1 = (Jugador) vista.getjTable1().getValueAt(vista.getjTable1().getSelectedRow(), vista.getjTable1().getColumnCount() - 1);
+                                    j1.set2_nom(vista.getjTextField1().getText());
+                                    j1.set3_email(vista.getjTextField2().getText());
+                                    j1.set4_telefon(vista.getjTextField3().getText());
+                                    j1.set5_equip((Equip) vista.getjComboBox1().getSelectedItem());
+                                    model.getClasseDAOJugadors().actualitza(j1);
+                                    carregaTaula((ArrayList) model.getClasseDAOJugadors().obtenLlista(), vista.getjTable1(), Jugador.class);
+                                    llimpiarCamps();
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Introdueix un telefon correcte d'Espanya!!!");
+                                }
+
+                            } catch (NumberFormatException e) {
+                                JOptionPane.showMessageDialog(null, "Has d'introduir un telefon vàlid amb format de 9 digits XXXXXXXXX");
+                            }
                         }
 
                     } else {
@@ -112,11 +147,29 @@ public class Controlador {
                             int numero = Integer.valueOf(vista.getjTextField3().getText());
 
                             if (numero >= 600000000 && numero <= 999999999) {
-                                Jugador jugador = new Jugador(vista.getjTextField1().getText(), vista.getjTextField2().getText(), vista.getjTextField3().getText());
-                                model.getClasseDAOJugadors().guarda(jugador);
-                                carregaTaula((ArrayList) model.getClasseDAOJugadors().obtenLlista(), vista.getjTable1(), Jugador.class);
-                                carregaCombo((ArrayList) model.getClasseDAOJugadors().obtenLlista(), vistaEquips.getjComboBox1());
-                                llimpiarCamps();
+
+                                Equip equip = (Equip) vista.getjComboBox1().getSelectedItem();
+
+                                if (equip.get2_nomEquip().equals("BUIT")) {
+
+                                    Jugador jugador = new Jugador(vista.getjTextField1().getText(), vista.getjTextField2().getText(), vista.getjTextField3().getText(), null);
+                                    model.getClasseDAOJugadors().guarda(jugador);
+                                    carregaTaula((ArrayList) model.getClasseDAOJugadors().obtenLlista(), vista.getjTable1(), Jugador.class);
+                                    carregaComboEquip(vistaEquips.getjComboBox1());
+                                    carregaComboEquip(vistaEquips.getjComboBox2());
+                                    JOptionPane.showMessageDialog(null, "Recorda de assignar un Equip al Jugador!");
+                                    llimpiarCamps();
+                                } else {
+
+                                    Jugador jugador = new Jugador(vista.getjTextField1().getText(), vista.getjTextField2().getText(), vista.getjTextField3().getText(), (Equip) vista.getjComboBox1().getSelectedItem());
+                                    model.getClasseDAOJugadors().guarda(jugador);
+                                    carregaTaula((ArrayList) model.getClasseDAOJugadors().obtenLlista(), vista.getjTable1(), Jugador.class);
+                                    carregaComboEquip(vistaEquips.getjComboBox1());
+                                    carregaComboEquip(vistaEquips.getjComboBox2());
+                                    llimpiarCamps();
+                                    carregaTaula((ArrayList) model.getClasseDAOEquips().obtenLlista(), vistaEquips.getjTable1(), Equip.class);
+                                }
+
                             } else {
                                 JOptionPane.showMessageDialog(null, "Introdueix un telefon correcte d'Espanya!!!");
                             }
@@ -161,7 +214,8 @@ public class Controlador {
                                 model.getClasseDAOJugadors().elimina(jugadorSel);
 
                                 carregaTaula((ArrayList) model.getClasseDAOJugadors().obtenLlista(), vista.getjTable1(), Jugador.class);
-                                carregaCombo((ArrayList) model.getClasseDAOJugadors().obtenLlista(), vistaEquips.getjComboBox1());
+                                carregaComboEquip(vistaEquips.getjComboBox1());
+                                carregaComboEquip(vistaEquips.getjComboBox2());
                                 llimpiarCamps();
                             } catch (Exception e) {
                                 tcm = vista.getjTable1().getColumnModel();
@@ -177,6 +231,7 @@ public class Controlador {
                     }
 
                 }
+
                 //Enrere Jugadors
                 if (actionEvent.getSource().equals(vista.getjButton4())) {
                     vista.setVisible(false);
@@ -185,11 +240,6 @@ public class Controlador {
                 if (actionEvent.getSource().equals(vistaEquips.getjButton4())) {
                     vistaEquips.setVisible(false);
                 }
-                //Boto refresh
-                if (actionEvent.getSource().equals(vistaEquips.getjButton5())) {
-                    carregaCombo((ArrayList) model.getClasseDAOJugadors().obtenLlista(), vistaEquips.getjComboBox1());
-
-                }
                 //Crear Equips
                 if (actionEvent.getSource().equals(vistaEquips.getjButton2())) {
 
@@ -197,33 +247,48 @@ public class Controlador {
                         JOptionPane.showMessageDialog(null, "Has d'introduir tots els camps de l'Equip");
                     } else {
                         try {
+                            Jugador j = (Jugador) vistaEquips.getjComboBox1().getSelectedItem();
 
-                            boolean permis = true;
-                            ArrayList<Equip> al = (ArrayList<Equip>) model.getClasseDAOEquips().obtenLlista();
+                            if (j.get2_nom().equals("BUIT")) {
 
-                            for (Equip equip : al) {
-
-                                if (equip.get4_capita().equals((Jugador) vistaEquips.getjComboBox1().getSelectedItem())) {
-                                    permis = false;
-                                    break;
-                                } else {
-
-                                }
-
-                            }
-
-                            if (permis) {
-                                Equip equip = new Equip(vistaEquips.getjTextField1().getText(), Integer.valueOf(vistaEquips.getjTextField2().getText()), (Jugador) vistaEquips.getjComboBox1().getSelectedItem());
-
+                                Equip equip = new Equip(vistaEquips.getjTextField1().getText(), Integer.valueOf(vistaEquips.getjTextField2().getText()), null);
                                 model.getClasseDAOEquips().guarda(equip);
                                 carregaTaula((ArrayList) model.getClasseDAOEquips().obtenLlista(), vistaEquips.getjTable1(), Equip.class);
                                 vistaEquips.getjTextField1().setText("");
                                 vistaEquips.getjTextField2().setText("");
-                            } else {
-                                JOptionPane.showMessageDialog(null, "El capita seleccionat ja és capità d'un equip, selecciona "
-                                        + "un altre Jugador per ser capità");
-                            }
+                                carregaComboJugador(vista.getjComboBox1());
 
+                            } else {
+
+                                boolean permis = true;
+                                ArrayList<Equip> al = (ArrayList<Equip>) model.getClasseDAOEquips().obtenLlista();
+
+                                for (Equip equip : al) {
+
+                                    if (equip.get4_capita() == null) {
+
+                                    } else if (equip.get4_capita().equals((Jugador) vistaEquips.getjComboBox1().getSelectedItem())) {
+                                        permis = false;
+                                        break;
+                                    } else {
+
+                                    }
+
+                                }
+
+                                if (permis) {
+                                    Equip equip = new Equip(vistaEquips.getjTextField1().getText(), Integer.valueOf(vistaEquips.getjTextField2().getText()), (Jugador) vistaEquips.getjComboBox1().getSelectedItem());
+
+                                    model.getClasseDAOEquips().guarda(equip);
+                                    carregaTaula((ArrayList) model.getClasseDAOEquips().obtenLlista(), vistaEquips.getjTable1(), Equip.class);
+                                    vistaEquips.getjTextField1().setText("");
+                                    vistaEquips.getjTextField2().setText("");
+                                    carregaComboJugador(vista.getjComboBox1());
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "El capita seleccionat ja és capità d'un equip, selecciona "
+                                            + "un altre Jugador per ser capità");
+                                }
+                            }
                         } catch (NumberFormatException e) {
                             JOptionPane.showMessageDialog(null, "Has d'introduir un numero al camp classificacio");
                         }
@@ -235,14 +300,36 @@ public class Controlador {
                     filasel = vistaEquips.getjTable1().getSelectedRow();
 
                     if (filasel != -1) {
-
                         TableColumnModel tcm = vistaEquips.getjTable1().getColumnModel();
                         tcm.addColumn(tableColumnEquip);
-                        model.getClasseDAOEquips().elimina((Equip) vistaEquips.getjTable1().getValueAt(vistaEquips.getjTable1().getSelectedRow(), vistaEquips.getjTable1().getColumnCount() - 1));
-                        tcm.removeColumn(tableColumnEquip);
-                        carregaTaula((ArrayList) model.getClasseDAOEquips().obtenLlista(), vistaEquips.getjTable1(), Equip.class);
-                        vistaEquips.getjTextField1().setText("");
-                        vistaEquips.getjTextField2().setText("");
+                        Equip equipSel = (Equip) vistaEquips.getjTable1().getValueAt(vistaEquips.getjTable1().getSelectedRow(), vistaEquips.getjTable1().getColumnCount() - 1);
+
+                        boolean permisPerBorrar = true;
+                        for (Jugador jugador : model.getClasseDAOJugadors().obtenLlista()) {
+
+                            if (jugador.get5_equip() == null) {
+
+                            } else if (jugador.get5_equip().get2_nomEquip().equals(equipSel.get2_nomEquip())) {
+                                permisPerBorrar = false;
+                            }
+
+                        }
+
+                        if (permisPerBorrar) {
+
+                            tcm.addColumn(tableColumnEquip);
+                            model.getClasseDAOEquips().elimina(equipSel);
+                            tcm.removeColumn(tableColumnEquip);
+                            carregaTaula((ArrayList) model.getClasseDAOEquips().obtenLlista(), vistaEquips.getjTable1(), Equip.class);
+                            vistaEquips.getjTextField1().setText("");
+                            vistaEquips.getjTextField2().setText("");
+                            carregaComboJugador(vista.getjComboBox1());
+                        } else {
+                            tcm.removeColumn(tableColumnEquip);
+                            JOptionPane.showMessageDialog(null, "No és pot borrar, l'equip seleccionat és l'equip d'un "
+                                    + "jugador, primer esborra el Jugador o posa l'Equip del Jugador a BUIT.");
+                        }
+
                     } else {
                         JOptionPane.showMessageDialog(null, "Has de seleccionar un equip primer per esborrar-lo");
                     }
@@ -251,58 +338,174 @@ public class Controlador {
                 //Modificar equips
                 if (actionEvent.getSource().equals(vistaEquips.getjButton1())) {
 
-                    filasel = vistaEquips.getjTable1().getSelectedRow();
-                    if (filasel != -1) {
-                        int permis = 1;
+                    try {
+                        filasel = vistaEquips.getjTable1().getSelectedRow();
+                        if (filasel != -1) {
 
-                        Jugador jCombo = (Jugador) vistaEquips.getjComboBox1().getSelectedItem();
-                        Jugador jTaula = (Jugador) vistaEquips.getjTable1().getValueAt(vistaEquips.getjTable1().getSelectedRow(), vistaEquips.getjTable1().getColumnCount() - 1);
+                            Jugador jugador = (Jugador) vistaEquips.getjComboBox1().getSelectedItem();
 
-                        if (jCombo.get2_nom().equals(jTaula.get2_nom())) {
-                            permis = 2;
-                        } else {
-                            ArrayList<Equip> al = (ArrayList<Equip>) model.getClasseDAOEquips().obtenLlista();
+                            if (jugador.get2_nom().equals("BUIT")) {
+                                int permis = 1;
 
-                            for (Equip equip : al) {
+                                Jugador jCombo = (Jugador) vistaEquips.getjComboBox1().getSelectedItem();
+                                Jugador jTaula = (Jugador) vistaEquips.getjTable1().getValueAt(vistaEquips.getjTable1().getSelectedRow(), vistaEquips.getjTable1().getColumnCount() - 2);
 
-                                if (equip.get4_capita().equals((Jugador) vistaEquips.getjComboBox1().getSelectedItem())) {
-                                    permis = 0;
-                                    break;
+                                if (jCombo.get2_nom().equals(jTaula.get2_nom())) {
+                                    permis = 2;
                                 } else {
+                                    ArrayList<Equip> al = (ArrayList<Equip>) model.getClasseDAOEquips().obtenLlista();
 
+                                    for (Equip equip : al) {
+
+                                        if (equip.get4_capita() == null) {
+
+                                        } else if (equip.get4_capita().equals((Jugador) vistaEquips.getjComboBox1().getSelectedItem())) {
+                                            permis = 0;
+                                            break;
+                                        } else {
+
+                                        }
+
+                                    }
+                                }
+                                if (permis == 1) {
+
+                                    TableColumnModel tcm = vistaEquips.getjTable1().getColumnModel();
+                                    tcm.addColumn(tableColumnEquip);
+                                    Equip e1 = (Equip) vistaEquips.getjTable1().getValueAt(vistaEquips.getjTable1().getSelectedRow(), vistaEquips.getjTable1().getColumnCount() - 1);
+                                    e1.set2_nomEquip(vistaEquips.getjTextField1().getText());
+                                    e1.set3_classificacio(Integer.valueOf(vistaEquips.getjTextField2().getText()));
+                                    e1.set4_capita(null);
+                                    model.getClasseDAOEquips().actualitza(e1);
+                                    carregaTaula((ArrayList) model.getClasseDAOEquips().obtenLlista(), vistaEquips.getjTable1(), Equip.class);
+                                    vistaEquips.getjTextField1().setText("");
+                                    vistaEquips.getjTextField2().setText("");
+                                    carregaComboJugador(vista.getjComboBox1());
+                                } else if (permis == 0) {
+                                    JOptionPane.showMessageDialog(null, "El jugador que has introduit ia es capità d'un altre equip, "
+                                            + "selecciona un altre!");
+                                } else if (permis == 2) {
+
+                                    TableColumnModel tcm = vistaEquips.getjTable1().getColumnModel();
+                                    tcm.addColumn(tableColumnEquip);
+                                    Equip e1 = (Equip) vistaEquips.getjTable1().getValueAt(vistaEquips.getjTable1().getSelectedRow(), vistaEquips.getjTable1().getColumnCount() - 1);
+                                    e1.set2_nomEquip(vistaEquips.getjTextField1().getText());
+                                    e1.set3_classificacio(Integer.valueOf(vistaEquips.getjTextField2().getText()));
+                                    model.getClasseDAOEquips().actualitza(e1);
+                                    carregaTaula((ArrayList) model.getClasseDAOEquips().obtenLlista(), vistaEquips.getjTable1(), Equip.class);
+                                    vistaEquips.getjTextField1().setText("");
+                                    vistaEquips.getjTextField2().setText("");
+                                    carregaComboJugador(vista.getjComboBox1());
+                                }
+                            } else {
+
+                                int permis = 1;
+
+                                Jugador jCombo = (Jugador) vistaEquips.getjComboBox1().getSelectedItem();
+                                Jugador jTaula = (Jugador) vistaEquips.getjTable1().getValueAt(vistaEquips.getjTable1().getSelectedRow(), vistaEquips.getjTable1().getColumnCount() - 2);
+
+                                if (jTaula == null) {
+
+                                } else if (jCombo.get2_nom().equals(jTaula.get2_nom())) {
+
+                                    permis = 2;
+
+                                } else {
+                                    ArrayList<Equip> al = (ArrayList<Equip>) model.getClasseDAOEquips().obtenLlista();
+
+                                    for (Equip equip : al) {
+
+                                        if (equip.get4_capita() == null) {
+
+                                        } else if (equip.get4_capita().equals((Jugador) vistaEquips.getjComboBox1().getSelectedItem())) {
+                                            permis = 0;
+                                            break;
+                                        } else {
+
+                                        }
+
+                                    }
+                                }
+                                if (permis == 1) {
+
+                                    TableColumnModel tcm = vistaEquips.getjTable1().getColumnModel();
+                                    tcm.addColumn(tableColumnEquip);
+                                    Equip e1 = (Equip) vistaEquips.getjTable1().getValueAt(vistaEquips.getjTable1().getSelectedRow(), vistaEquips.getjTable1().getColumnCount() - 1);
+                                    e1.set2_nomEquip(vistaEquips.getjTextField1().getText());
+                                    e1.set3_classificacio(Integer.valueOf(vistaEquips.getjTextField2().getText()));
+                                    e1.set4_capita((Jugador) vistaEquips.getjComboBox1().getSelectedItem());
+                                    model.getClasseDAOEquips().actualitza(e1);
+                                    carregaTaula((ArrayList) model.getClasseDAOEquips().obtenLlista(), vistaEquips.getjTable1(), Equip.class);
+                                    vistaEquips.getjTextField1().setText("");
+                                    vistaEquips.getjTextField2().setText("");
+                                    carregaComboJugador(vista.getjComboBox1());
+                                } else if (permis == 0) {
+                                    JOptionPane.showMessageDialog(null, "El jugador que has introduit ia es capità d'un altre equip, "
+                                            + "selecciona un altre!");
+                                } else if (permis == 2) {
+
+                                    TableColumnModel tcm = vistaEquips.getjTable1().getColumnModel();
+                                    tcm.addColumn(tableColumnEquip);
+                                    Equip e1 = (Equip) vistaEquips.getjTable1().getValueAt(vistaEquips.getjTable1().getSelectedRow(), vistaEquips.getjTable1().getColumnCount() - 1);
+                                    e1.set2_nomEquip(vistaEquips.getjTextField1().getText());
+                                    e1.set3_classificacio(Integer.valueOf(vistaEquips.getjTextField2().getText()));
+                                    model.getClasseDAOEquips().actualitza(e1);
+                                    carregaTaula((ArrayList) model.getClasseDAOEquips().obtenLlista(), vistaEquips.getjTable1(), Equip.class);
+                                    vistaEquips.getjTextField1().setText("");
+                                    vistaEquips.getjTextField2().setText("");
+                                    carregaComboJugador(vista.getjComboBox1());
                                 }
 
                             }
+
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Has de seleccionar un equip per modificar-lo");
                         }
-                        if (permis == 1) {
-                            
+                    } catch (NumberFormatException e) {
+                        TableColumnModel tcm = vistaEquips.getjTable1().getColumnModel();
+                        tcm.removeColumn(tableColumnEquip);
+                        JOptionPane.showMessageDialog(null, "Introdueix un numero a la classificació");
+                    }
+
+                }
+                //Afegir jugador arraylist de equips
+                if (actionEvent.getSource().equals(vistaEquips.getjButton6())) {
+
+                    filasel = vistaEquips.getjTable1().getSelectedRow();
+
+                    if (vistaEquips.getjComboBox2().getSelectedItem() != null) {
+                        if (filasel != -1) {
                             TableColumnModel tcm = vistaEquips.getjTable1().getColumnModel();
                             tcm.addColumn(tableColumnEquip);
                             Equip e1 = (Equip) vistaEquips.getjTable1().getValueAt(vistaEquips.getjTable1().getSelectedRow(), vistaEquips.getjTable1().getColumnCount() - 1);
-                            e1.set2_nomEquip(vistaEquips.getjTextField1().getText());
-                            e1.set3_classificacio(Integer.valueOf(vistaEquips.getjTextField2().getText()));
-                            e1.set4_capita((Jugador) vistaEquips.getjComboBox1().getSelectedItem());
-                            model.getClasseDAOEquips().actualitza(e1);
-                            carregaTaula((ArrayList) model.getClasseDAOEquips().obtenLlista(), vistaEquips.getjTable1(), Equip.class);
-                            vistaEquips.getjTextField1().setText("");
-                            vistaEquips.getjTextField2().setText("");
-                        } else if (permis == 0) {
-                            JOptionPane.showMessageDialog(null, "El jugador que has introduit ia es capità d'un altre equip, "
-                                    + "selecciona un altre!");
-                        } else if (permis == 2) {
-                            
-                            TableColumnModel tcm = vistaEquips.getjTable1().getColumnModel();
-                            tcm.addColumn(tableColumnEquip);
-                            Equip e1 = (Equip) vistaEquips.getjTable1().getValueAt(vistaEquips.getjTable1().getSelectedRow(), vistaEquips.getjTable1().getColumnCount() - 1);
-                            e1.set2_nomEquip(vistaEquips.getjTextField1().getText());
-                            e1.set3_classificacio(Integer.valueOf(vistaEquips.getjTextField2().getText()));
-                            model.getClasseDAOEquips().actualitza(e1);
-                            carregaTaula((ArrayList) model.getClasseDAOEquips().obtenLlista(), vistaEquips.getjTable1(), Equip.class);
-                            vistaEquips.getjTextField1().setText("");
-                            vistaEquips.getjTextField2().setText("");
+                            Jugador j = (Jugador) vistaEquips.getjComboBox2().getSelectedItem();
+                            boolean borrar = false;
+                            for (Jugador jugador : e1.get5_jugadors()) {
+
+                                if (jugador.get2_nom().equals(j.get2_nom())) {
+                                    borrar = true;
+                                }
+
+                            }
+
+                            if (!borrar) {
+                                e1.get5_jugadors().add((Jugador) vistaEquips.getjComboBox2().getSelectedItem());
+                                model.getClasseDAOEquips().guarda(e1);
+                                tcm.removeColumn(tableColumnEquip);
+                                carregaTaula((ArrayList) model.getClasseDAOEquips().obtenLlista(), vistaEquips.getjTable1(), Equip.class);
+                            } else {
+                                e1.get5_jugadors().remove(j);
+                                model.getClasseDAOEquips().guarda(e1);
+                                tcm.removeColumn(tableColumnEquip);
+                                carregaTaula((ArrayList) model.getClasseDAOEquips().obtenLlista(), vistaEquips.getjTable1(), Equip.class);
+
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Has de seleccionar primer un Equip al que afegir/borrar Jugadors");
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null, "Has de seleccionar un equip per modificar-lo");
+                        JOptionPane.showMessageDialog(null, "Has de crear Jugadors per introduir-los dintre de la plantilla "
+                                + "d'un equip.");
                     }
 
                 }
@@ -332,9 +535,9 @@ public class Controlador {
         vistaGeneral.getjButton4().addActionListener(actionListener);
         vistaEquips.getjButton4().addActionListener(actionListener);
         vistaEquips.getjButton2().addActionListener(actionListener);
-        vistaEquips.getjButton5().addActionListener(actionListener);
         vistaEquips.getjButton3().addActionListener(actionListener);
         vistaEquips.getjButton1().addActionListener(actionListener);
+        vistaEquips.getjButton6().addActionListener(actionListener);
 
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
@@ -466,6 +669,28 @@ public class Controlador {
         vista.getjTextField1().setText("");
         vista.getjTextField2().setText("");
         vista.getjTextField3().setText("");
+    }
+
+    private void carregaComboJugador(JComboBox combo) {
+
+        carregaCombo((ArrayList) model.getClasseDAOEquips().obtenLlista(), combo);
+        ArrayList ale = (ArrayList) model.getClasseDAOEquips().obtenLlista();
+        ale.add(new Equip("BUIT"));
+        carregaCombo(ale, vista.getjComboBox1());
+    }
+
+    private void carregaComboEquip(JComboBox combo) {
+
+        if (combo == vistaEquips.getjComboBox2()) {
+            carregaCombo((ArrayList) model.getClasseDAOJugadors().obtenLlista(), combo);
+        } else {
+
+            carregaCombo((ArrayList) model.getClasseDAOJugadors().obtenLlista(), combo);
+
+            ArrayList alj = (ArrayList) model.getClasseDAOJugadors().obtenLlista();
+            alj.add(new Jugador("BUIT"));
+            carregaCombo(alj, combo);
+        }
     }
 
     public static class OrdenarMetodeClasseAlfabeticament implements Comparator {
