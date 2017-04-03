@@ -8,9 +8,11 @@ package Controlador;
 import Vista.VistaEquips;
 import Vista.VistaGeneral;
 import Vista.VistaJugadors;
+import Vista.VistaTorneig;
 import entitats.Equip;
 import entitats.Jugador;
 import entitats.Model;
+import entitats.Torneig;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -32,7 +34,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-import org.hibernate.HibernateException;
 
 /**
  *
@@ -47,28 +48,34 @@ public class Controlador {
     VistaJugadors vista;
     VistaGeneral vistaGeneral;
     VistaEquips vistaEquips;
+    VistaTorneig vistaTorneig;
     private int filasel = -1;
     private String nomJugador;
     private String emailJugador;
     private String telefonJugador;
     private String nomEquip;
     private int classificacio;
+    private String nomTorneig;
     private TableColumn tableColumnJugador;
     private TableColumn tableColumnEquip;
+    private TableColumn tableColumnTorneig;
     private boolean esCapita = false;
 
-    public Controlador(Model model, VistaJugadors vista, VistaGeneral vistaGeneral, VistaEquips vistaEquips) {
+    public Controlador(Model model, VistaJugadors vista, VistaGeneral vistaGeneral, VistaEquips vistaEquips, VistaTorneig vistaTorneig) {
         this.model = model;
         this.vista = vista;
         this.vistaGeneral = vistaGeneral;
         this.vistaEquips = vistaEquips;
+        this.vistaTorneig = vistaTorneig;
 
         carregaComboJugador(vista.getjComboBox1());
         carregaComboEquip(vistaEquips.getjComboBox1());
         carregaComboEquip(vistaEquips.getjComboBox2());
+        carregaComboEquip(vistaEquips.getjComboBox3());
 
         tableColumnJugador = carregaTaula((ArrayList) model.getClasseDAOJugadors().obtenLlista(), vista.getjTable1(), Jugador.class);
         tableColumnEquip = carregaTaula((ArrayList) model.getClasseDAOEquips().obtenLlista(), vistaEquips.getjTable1(), Equip.class);
+        tableColumnTorneig = carregaTaula((ArrayList) model.getClasseDAOTorneig().obtenLlista(), vistaTorneig.getjTable1(), Torneig.class);
 
         control();
     }
@@ -123,6 +130,7 @@ public class Controlador {
                                     j1.set5_equip((Equip) vista.getjComboBox1().getSelectedItem());
                                     model.getClasseDAOJugadors().actualitza(j1);
                                     carregaTaula((ArrayList) model.getClasseDAOJugadors().obtenLlista(), vista.getjTable1(), Jugador.class);
+                                    carregaTaula((ArrayList) model.getClasseDAOEquips().obtenLlista(), vistaEquips.getjTable1(), Equip.class);
                                     llimpiarCamps();
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Introdueix un telefon correcte d'Espanya!!!");
@@ -284,6 +292,7 @@ public class Controlador {
                                     vistaEquips.getjTextField1().setText("");
                                     vistaEquips.getjTextField2().setText("");
                                     carregaComboJugador(vista.getjComboBox1());
+
                                 } else {
                                     JOptionPane.showMessageDialog(null, "El capita seleccionat ja és capità d'un equip, selecciona "
                                             + "un altre Jugador per ser capità");
@@ -324,6 +333,7 @@ public class Controlador {
                             vistaEquips.getjTextField1().setText("");
                             vistaEquips.getjTextField2().setText("");
                             carregaComboJugador(vista.getjComboBox1());
+
                         } else {
                             tcm.removeColumn(tableColumnEquip);
                             JOptionPane.showMessageDialog(null, "No és pot borrar, l'equip seleccionat és l'equip d'un "
@@ -348,9 +358,11 @@ public class Controlador {
                                 int permis = 1;
 
                                 Jugador jCombo = (Jugador) vistaEquips.getjComboBox1().getSelectedItem();
-                                Jugador jTaula = (Jugador) vistaEquips.getjTable1().getValueAt(vistaEquips.getjTable1().getSelectedRow(), vistaEquips.getjTable1().getColumnCount() - 2);
+                                Jugador jTaula = (Jugador) vistaEquips.getjTable1().getValueAt(vistaEquips.getjTable1().getSelectedRow(), vistaEquips.getjTable1().getColumnCount() - 3);
 
-                                if (jCombo.get2_nom().equals(jTaula.get2_nom())) {
+                                if (jTaula == null) {
+
+                                } else if (jCombo.get2_nom().equals(jTaula.get2_nom())) {
                                     permis = 2;
                                 } else {
                                     ArrayList<Equip> al = (ArrayList<Equip>) model.getClasseDAOEquips().obtenLlista();
@@ -381,6 +393,7 @@ public class Controlador {
                                     vistaEquips.getjTextField1().setText("");
                                     vistaEquips.getjTextField2().setText("");
                                     carregaComboJugador(vista.getjComboBox1());
+
                                 } else if (permis == 0) {
                                     JOptionPane.showMessageDialog(null, "El jugador que has introduit ia es capità d'un altre equip, "
                                             + "selecciona un altre!");
@@ -396,13 +409,14 @@ public class Controlador {
                                     vistaEquips.getjTextField1().setText("");
                                     vistaEquips.getjTextField2().setText("");
                                     carregaComboJugador(vista.getjComboBox1());
+
                                 }
                             } else {
 
                                 int permis = 1;
 
                                 Jugador jCombo = (Jugador) vistaEquips.getjComboBox1().getSelectedItem();
-                                Jugador jTaula = (Jugador) vistaEquips.getjTable1().getValueAt(vistaEquips.getjTable1().getSelectedRow(), vistaEquips.getjTable1().getColumnCount() - 2);
+                                Jugador jTaula = (Jugador) vistaEquips.getjTable1().getValueAt(vistaEquips.getjTable1().getSelectedRow(), vistaEquips.getjTable1().getColumnCount() - 3);
 
                                 if (jTaula == null) {
 
@@ -509,9 +523,82 @@ public class Controlador {
                     }
 
                 }
+                //Afegir tornejos a la taula equips
+                if (actionEvent.getSource().equals(vistaEquips.getjButton5())) {
+
+                    filasel = vistaEquips.getjTable1().getSelectedRow();
+
+                    if (filasel != -1) {
+
+                        Torneig torneig = (Torneig) vistaEquips.getjComboBox3().getSelectedItem();
+
+                        TableColumnModel tcm = vistaEquips.getjTable1().getColumnModel();
+                        tcm.addColumn(tableColumnEquip);
+                        Equip e1 = (Equip) vistaEquips.getjTable1().getValueAt(
+                                vistaEquips.getjTable1().getSelectedRow(),
+                                vistaEquips.getjTable1().getColumnCount() - 1
+                        );
+
+                        /*
+                        Variable de control:
+                         - 1 = Afegir torneig taula Equips
+                         - 2 = Borrar el torneig sel·leccionat de la taula Equips
+                         - 3 = Nom 'BUIT' esborrar tot el contignut de l'ArrayList
+                         */
+                        int control = 1;
+
+                        if (torneig.get2_nomTorneig().equals("BUIT")) {
+                            control = 3;
+                        } else {
+
+                            for (Torneig t : e1.get6_tornejos()) {
+
+                                if (t.get2_nomTorneig().equals(torneig.get2_nomTorneig())) {
+                                    control = 2;
+                                }
+
+                            }
+
+                        }
+
+                        if (control == 1) {
+                            e1.get6_tornejos().add(
+                                    torneig
+                            );
+                        } else if (control == 2) {
+                            e1.get6_tornejos().remove(
+                                    torneig
+                            );
+                        } else if (control == 3) {
+                            e1.get6_tornejos().clear();
+                        } else {
+                            System.out.println("UNEXPECTED");
+                        }
+
+                    } else {
+
+                        JOptionPane.showMessageDialog(null, "Selecciona primer un equip per asignar-lo"
+                                + " a un torneig existent.");
+
+                    }
+                    carregaTaula(
+                            (ArrayList) model.getClasseDAOEquips().obtenLlista(),
+                            vistaEquips.getjTable1(), Equip.class
+                    );
+
+                    carregaTaula(
+                            (ArrayList) model.getClasseDAOTorneig().obtenLlista(),
+                            vistaTorneig.getjTable1(), Torneig.class
+                    );
+
+                }
                 //Mostrar Taula Jugadors
                 if (actionEvent.getSource().equals(vistaGeneral.getjButton2())) {
                     vista.setVisible(true);
+                }
+                //Mostrar Taula Tornejos
+                if (actionEvent.getSource().equals(vistaGeneral.getjButton5())) {
+                    vistaTorneig.setVisible(true);
                 }
                 //SORTIR
                 if (actionEvent.getSource().equals(vistaGeneral.getjButton4())) {
@@ -522,6 +609,111 @@ public class Controlador {
                 if (actionEvent.getSource().equals(vistaGeneral.getjButton3())) {
                     vistaEquips.setVisible(true);
                 }
+                //Amagar taula tornejos
+                if (actionEvent.getSource().equals(vistaTorneig.getjButton4())) {
+                    vistaTorneig.setVisible(false);
+                }
+                //Crear Tornejos
+                if (actionEvent.getSource().equals(vistaTorneig.getjButton2())) {
+
+                    if (!vistaTorneig.getjTextField1().getText().trim().equals("")) {
+                        Torneig torneig = new Torneig(vistaTorneig.getjTextField1().getText());
+                        model.getClasseDAOTorneig().guarda(torneig);
+                        vistaTorneig.getjTextField1().setText("");
+                        carregaComboEquip(vistaEquips.getjComboBox3());
+                        carregaTaula((ArrayList) model.getClasseDAOTorneig().obtenLlista(), vistaTorneig.getjTable1(), Torneig.class);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Has d'introduir tots els camps del torneig");
+                    }
+
+                }
+                //Borrar Tornejos
+                if (actionEvent.getSource().equals(vistaTorneig.getjButton3())) {
+
+                    filasel = vistaTorneig.getjTable1().getSelectedRow();
+
+                    if (filasel != -1) {
+                        TableColumnModel tcm = vistaTorneig.getjTable1().getColumnModel();
+                        tcm.addColumn(tableColumnTorneig);
+                        Torneig t = (Torneig) vistaTorneig.getjTable1().getValueAt(
+                                filasel,
+                                vistaTorneig.getjTable1().getColumnCount() - 1
+                        );
+                        model.getClasseDAOTorneig().elimina(t);
+                        vistaTorneig.getjTextField1().setText("");
+                        carregaComboEquip(vistaEquips.getjComboBox3());
+                        carregaTaula((ArrayList) model.getClasseDAOTorneig().obtenLlista(), vistaTorneig.getjTable1(), Torneig.class);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Has de seleccionar un torneig per borrar-lo");
+                    }
+
+                }
+                //Modificar Torneig
+                if (actionEvent.getSource().equals(vistaTorneig.getjButton1())) {
+
+                    filasel = vistaTorneig.getjTable1().getSelectedRow();
+
+                    if (filasel != -1) {
+                        TableColumnModel tcm = vistaTorneig.getjTable1().getColumnModel();
+                        tcm.addColumn(tableColumnTorneig);
+                        Torneig t = (Torneig) vistaTorneig.getjTable1().getValueAt(
+                                filasel,
+                                vistaTorneig.getjTable1().getColumnCount() - 1
+                        );
+                        t.set2_nomTorneig(vistaTorneig.getjTextField1().getText());
+                        model.getClasseDAOTorneig().actualitza(t);
+                        vistaTorneig.getjTextField1().setText("");
+                        carregaComboEquip(vistaEquips.getjComboBox3());
+                        carregaTaula((ArrayList) model.getClasseDAOTorneig().obtenLlista(), vistaTorneig.getjTable1(), Torneig.class);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Selecciona un torneig per modificar-lo");
+                    }
+
+                }
+                //Afegir Equip arraylist torneig
+//                if (actionEvent.getSource().equals(vistaTorneig.getjButton6())) {
+//
+//                    filasel = vistaTorneig.getjTable1().getSelectedRow();
+//
+//                    if (filasel != -1) {
+//                        TableColumnModel tcm = vistaTorneig.getjTable1().getColumnModel();
+//                        tcm.addColumn(tableColumnTorneig);
+//                        Torneig t = (Torneig) vistaTorneig.getjTable1().getValueAt(
+//                                filasel,
+//                                vistaTorneig.getjTable1().getColumnCount() - 1
+//                        );
+//
+//                        Equip equip = (Equip) vistaTorneig.getjComboBox1().getSelectedItem();
+//                        boolean borrar = false;
+//
+//                        for (Equip e : t.get3_Equips()) {
+//
+//                            if (e.get2_nomEquip().equals(equip.get2_nomEquip())) {
+//                                borrar = true;
+//                            }
+//
+//                        }
+//
+//                        if (!borrar) {
+//                            t.get3_Equips().add(
+//                                    (Equip) vistaTorneig.getjComboBox1().getSelectedItem()
+//                            );
+//                            model.getClasseDAOTorneig().guarda(t);
+//                            vistaTorneig.getjTextField1().setText("");
+//                            carregaTaula((ArrayList) model.getClasseDAOTorneig().obtenLlista(), vistaTorneig.getjTable1(), Torneig.class);
+//                        } else {
+//                            t.get3_Equips().remove(
+//                                    equip
+//                            );
+//                            model.getClasseDAOTorneig().guarda(t);
+//                            vistaTorneig.getjTextField1().setText("");
+//                            carregaTaula((ArrayList) model.getClasseDAOTorneig().obtenLlista(), vistaTorneig.getjTable1(), Torneig.class);
+//                        }
+//                    } else {
+//                        JOptionPane.showMessageDialog(null, "Selecciona un torneig per afegir-li/borrar-li l'equip.");
+//                    }
+//
+//                }
 
             }
 
@@ -533,11 +725,18 @@ public class Controlador {
         vistaGeneral.getjButton2().addActionListener(actionListener);
         vistaGeneral.getjButton3().addActionListener(actionListener);
         vistaGeneral.getjButton4().addActionListener(actionListener);
+        vistaGeneral.getjButton5().addActionListener(actionListener);
         vistaEquips.getjButton4().addActionListener(actionListener);
         vistaEquips.getjButton2().addActionListener(actionListener);
         vistaEquips.getjButton3().addActionListener(actionListener);
         vistaEquips.getjButton1().addActionListener(actionListener);
         vistaEquips.getjButton6().addActionListener(actionListener);
+        vistaEquips.getjButton5().addActionListener(actionListener);
+        vistaTorneig.getjButton2().addActionListener(actionListener);
+        vistaTorneig.getjButton3().addActionListener(actionListener);
+        vistaTorneig.getjButton1().addActionListener(actionListener);
+        //vistaTorneig.getjButton6().addActionListener(actionListener);
+        vistaTorneig.getjButton4().addActionListener(actionListener);
 
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
@@ -573,12 +772,27 @@ public class Controlador {
                     }
 
                 }
+                if (e.getSource().equals(vistaTorneig.getjTable1())) {
+
+                    try {
+                        filasel = vistaTorneig.getjTable1().getSelectedRow();
+                        if (filasel != -1) {
+
+                            nomTorneig = (String) vistaTorneig.getjTable1().getValueAt(filasel, 1);
+                            vistaTorneig.getjTextField1().setText(nomTorneig);
+
+                        }
+                    } catch (NumberFormatException ex) {
+                    }
+
+                }
 
             }
 
         };
         vista.getjTable1().addMouseListener(mouseAdapter);
         vistaEquips.getjTable1().addMouseListener(mouseAdapter);
+        vistaTorneig.getjTable1().addMouseListener(mouseAdapter);
 
     }
 
@@ -658,7 +872,7 @@ public class Controlador {
         TableColumn column;
         for (int i = 0; i < taula.getColumnCount(); i++) {
             column = taula.getColumnModel().getColumn(i);
-            column.setMaxWidth(250);
+            //column.setMaxWidth(250);
         }
 
         return columna;
@@ -683,14 +897,27 @@ public class Controlador {
 
         if (combo == vistaEquips.getjComboBox2()) {
             carregaCombo((ArrayList) model.getClasseDAOJugadors().obtenLlista(), combo);
-        } else {
-
+        } else if (combo == vistaEquips.getjComboBox1()) {
             carregaCombo((ArrayList) model.getClasseDAOJugadors().obtenLlista(), combo);
 
             ArrayList alj = (ArrayList) model.getClasseDAOJugadors().obtenLlista();
             alj.add(new Jugador("BUIT"));
             carregaCombo(alj, combo);
+        } else if (combo == vistaEquips.getjComboBox3()) {
+            carregaCombo((ArrayList) model.getClasseDAOJugadors().obtenLlista(), combo);
+            ArrayList alt = (ArrayList) model.getClasseDAOTorneig().obtenLlista();
+            alt.add(new Torneig("BUIT"));
+            carregaCombo(alt, combo);
         }
+
+    }
+
+    private void carregaComboTorneig(JComboBox combo) {
+
+        carregaCombo((ArrayList) model.getClasseDAOEquips().obtenLlista(), combo);
+//        ArrayList ale = (ArrayList) model.getClasseDAOEquips().obtenLlista();
+//        ale.add(new Equip("BUIT"));
+//        carregaCombo(ale, vistaTorneig.getjComboBox1());
     }
 
     public static class OrdenarMetodeClasseAlfabeticament implements Comparator {

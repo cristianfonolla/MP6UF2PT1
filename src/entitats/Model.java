@@ -17,6 +17,7 @@ public class Model {
     private static Session sesio = HibernateUtil.getSessionFactory().openSession();
     private ClasseDAO<Jugador> getClasseDAOJugadors = new ClasseDAO<>(Jugador.class, sesio);
     private ClasseDAO<Equip> classeDAOEquips = new ClasseDAO<>(Equip.class, sesio);
+    private ClasseDAO<Torneig> classeDAOTorneig = new ClasseDAO<>(Torneig.class, sesio);
 
     public ClasseDAO<Equip> getClasseDAOEquips() {
         return classeDAOEquips;
@@ -24,6 +25,10 @@ public class Model {
 
     public ClasseDAO<Jugador> getClasseDAOJugadors() {
         return getClasseDAOJugadors;
+    }
+
+    public ClasseDAO<Torneig> getClasseDAOTorneig() {
+        return classeDAOTorneig;
     }
 
     public void tancaSessio() {

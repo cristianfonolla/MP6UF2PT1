@@ -6,12 +6,13 @@
 package entitats;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  *
@@ -23,39 +24,47 @@ public class Torneig {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idTorneig;
+    private long _1_idTorneig;
 
-    private String nomTorneig;
+    private String _2_nomTorneig;
 
-    @Transient
-    private ArrayList<Equip> Equips = new ArrayList<>();
+    @ManyToMany(mappedBy = "_6_tornejos")
+    private Collection<Equip> _3_Equips = new ArrayList<>();
 
     public Torneig() {
     }
 
-    public Torneig(String nomTorneig) {
-        this.nomTorneig = nomTorneig;
+    public Torneig(String _2_nomTorneig) {
+        this._2_nomTorneig = _2_nomTorneig;
     }
 
-    public String getNomTorneig() {
-        return nomTorneig;
+    public long get1_idTorneig() {
+        return _1_idTorneig;
     }
 
-    public void setNomTorneig(String nomTorneig) {
-        this.nomTorneig = nomTorneig;
+    public void set1_idTorneig(long _1_idTorneig) {
+        this._1_idTorneig = _1_idTorneig;
     }
 
-    public ArrayList<Equip> getEquips() {
-        return Equips;
+    public String get2_nomTorneig() {
+        return _2_nomTorneig;
     }
 
-    public void setEquips(ArrayList<Equip> Equips) {
-        this.Equips = Equips;
+    public void set2_nomTorneig(String _2_nomTorneig) {
+        this._2_nomTorneig = _2_nomTorneig;
+    }
+
+    public Collection<Equip> get3_Equips() {
+        return _3_Equips;
+    }
+
+    public void set3_Equips(Collection<Equip> _3_Equips) {
+        this._3_Equips = _3_Equips;
     }
 
     @Override
     public String toString() {
-        return "Torneig{" + "idTorneig=" + idTorneig + ", nomTorneig=" + nomTorneig + ", Equips=" + Equips + '}';
+        return _2_nomTorneig;
     }
 
 }

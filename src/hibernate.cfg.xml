@@ -12,5 +12,6 @@
     <property name="hibernate.show_sql">true</property>
     <mapping class="entitats.Jugador"/>
     <mapping class="entitats.Equip"/>
+    <mapping class="entitats.Torneig"/>
   </session-factory>
 </hibernate-configuration>

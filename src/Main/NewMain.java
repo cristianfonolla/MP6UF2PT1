@@ -9,6 +9,7 @@ import Controlador.Controlador;
 import Vista.VistaEquips;
 import Vista.VistaGeneral;
 import Vista.VistaJugadors;
+import Vista.VistaTorneig;
 import entitats.Model;
 
 /**
@@ -21,12 +22,14 @@ public class NewMain {
     static VistaJugadors vista = new VistaJugadors();
     static VistaGeneral vistaGeneral = new VistaGeneral();
     static VistaEquips vistaEquips = new VistaEquips();
+    static VistaTorneig vistaTorneig = new VistaTorneig();
 
     public static void main(String[] args) {
         vista.setVisible(false);
         vistaEquips.setVisible(false);
+        vistaTorneig.setVisible(false);
         vistaGeneral.setVisible(true);
-        new Controlador(model, vista, vistaGeneral, vistaEquips);
+        new Controlador(model, vista, vistaGeneral, vistaEquips, vistaTorneig);
     }
 
     private static void inicivariables() {

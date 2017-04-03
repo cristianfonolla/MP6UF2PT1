@@ -3,16 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/cristian/NetBeansProjects/MP6UF2PT1/src/entitats/ClasseDAO.java</file>
             <file>file:/home/cristian/NetBeansProjects/MP6UF2PT1/src/hibernate.cfg.xml</file>
+            <file>file:/home/cristian/NetBeansProjects/MP6UF2PT1/src/entitats/ClasseDAO.java</file>
             <file>file:/home/cristian/NetBeansProjects/MP6UF2PT1/src/Vista/VistaGeneral.java</file>
             <file>file:/home/cristian/NetBeansProjects/MP6UF2PT1/src/Controlador/Controlador.java</file>
-            <file>file:/home/cristian/NetBeansProjects/MP6UF2PT1/src/Vista/VistaEquips.java</file>
             <file>file:/home/cristian/NetBeansProjects/MP6UF2PT1/src/entitats/Equip.java</file>
-            <file>file:/home/cristian/NetBeansProjects/MP6UF2PT1/src/Vista/VistaJugadors.java</file>
             <file>file:/home/cristian/NetBeansProjects/MP6UF2PT1/src/entitats/Torneig.java</file>
             <file>file:/home/cristian/NetBeansProjects/MP6UF2PT1/src/entitats/Model.java</file>
-            <file>file:/home/cristian/NetBeansProjects/MP6UF2PT1/src/entitats/Jugador.java</file>
+            <file>file:/home/cristian/NetBeansProjects/MP6UF2PT1/src/Vista/VistaJugadors.java</file>
+            <file>file:/home/cristian/NetBeansProjects/MP6UF2PT1/src/Vista/VistaTorneig.java</file>
             <file>file:/home/cristian/NetBeansProjects/MP6UF2PT1/src/Main/NewMain.java</file>
         </group>
     </open-files>

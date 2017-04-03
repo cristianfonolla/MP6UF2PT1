@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -35,8 +37,9 @@ public class Equip {
 
     @OneToMany(mappedBy = "_5_equip")
     private Collection<Jugador> _5_jugadors = new ArrayList<>();
-//    @Transient
-//    private ArrayList<Torneig> tornejos = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "Equips_Tornejos")
+    private Collection<Torneig> _6_tornejos = new ArrayList<>();
 
     public Equip() {
     }
@@ -54,6 +57,14 @@ public class Equip {
         this._2_nomEquip = _2_nomEquip;
         this._3_classificacio = _3_classificacio;
         this._4_capita = _4_capita;
+    }
+
+    public Collection<Torneig> get6_tornejos() {
+        return _6_tornejos;
+    }
+
+    public void set6_tornejos(Collection<Torneig> _6_tornejos) {
+        this._6_tornejos = _6_tornejos;
     }
 
     public long get1_idEquip() {
