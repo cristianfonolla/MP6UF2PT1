@@ -555,6 +555,7 @@ public class Controlador {
 
                                 if (t.get2_nomTorneig().equals(torneig.get2_nomTorneig())) {
                                     control = 2;
+                                    break;
                                 }
 
                             }
@@ -565,12 +566,25 @@ public class Controlador {
                             e1.get6_tornejos().add(
                                     torneig
                             );
+
+                            torneig.get3_Equips().add(e1);
+
                         } else if (control == 2) {
                             e1.get6_tornejos().remove(
                                     torneig
                             );
+
+                            torneig.get3_Equips().remove(e1);
                         } else if (control == 3) {
+
+                            for (Torneig t : e1.get6_tornejos()) {
+
+                                t.get3_Equips().remove(e1);
+
+                            }
+
                             e1.get6_tornejos().clear();
+
                         } else {
                             System.out.println("UNEXPECTED");
                         }
@@ -633,16 +647,25 @@ public class Controlador {
                     filasel = vistaTorneig.getjTable1().getSelectedRow();
 
                     if (filasel != -1) {
+
                         TableColumnModel tcm = vistaTorneig.getjTable1().getColumnModel();
                         tcm.addColumn(tableColumnTorneig);
                         Torneig t = (Torneig) vistaTorneig.getjTable1().getValueAt(
                                 filasel,
                                 vistaTorneig.getjTable1().getColumnCount() - 1
                         );
-                        model.getClasseDAOTorneig().elimina(t);
-                        vistaTorneig.getjTextField1().setText("");
-                        carregaComboEquip(vistaEquips.getjComboBox3());
-                        carregaTaula((ArrayList) model.getClasseDAOTorneig().obtenLlista(), vistaTorneig.getjTable1(), Torneig.class);
+
+                        if (t.get3_Equips().isEmpty()) {
+                            model.getClasseDAOTorneig().elimina(t);
+                            vistaTorneig.getjTextField1().setText("");
+                            carregaComboEquip(vistaEquips.getjComboBox3());
+                            carregaTaula((ArrayList) model.getClasseDAOTorneig().obtenLlista(), vistaTorneig.getjTable1(), Torneig.class);
+                        } else {
+                            tcm.removeColumn(tableColumnTorneig);
+                            JOptionPane.showMessageDialog(null, "Has de desinscriure tots els "
+                                    + "equips per poder borrar un torneig.");
+                        }
+
                     } else {
                         JOptionPane.showMessageDialog(null, "Has de seleccionar un torneig per borrar-lo");
                     }
@@ -670,50 +693,6 @@ public class Controlador {
                     }
 
                 }
-                //Afegir Equip arraylist torneig
-//                if (actionEvent.getSource().equals(vistaTorneig.getjButton6())) {
-//
-//                    filasel = vistaTorneig.getjTable1().getSelectedRow();
-//
-//                    if (filasel != -1) {
-//                        TableColumnModel tcm = vistaTorneig.getjTable1().getColumnModel();
-//                        tcm.addColumn(tableColumnTorneig);
-//                        Torneig t = (Torneig) vistaTorneig.getjTable1().getValueAt(
-//                                filasel,
-//                                vistaTorneig.getjTable1().getColumnCount() - 1
-//                        );
-//
-//                        Equip equip = (Equip) vistaTorneig.getjComboBox1().getSelectedItem();
-//                        boolean borrar = false;
-//
-//                        for (Equip e : t.get3_Equips()) {
-//
-//                            if (e.get2_nomEquip().equals(equip.get2_nomEquip())) {
-//                                borrar = true;
-//                            }
-//
-//                        }
-//
-//                        if (!borrar) {
-//                            t.get3_Equips().add(
-//                                    (Equip) vistaTorneig.getjComboBox1().getSelectedItem()
-//                            );
-//                            model.getClasseDAOTorneig().guarda(t);
-//                            vistaTorneig.getjTextField1().setText("");
-//                            carregaTaula((ArrayList) model.getClasseDAOTorneig().obtenLlista(), vistaTorneig.getjTable1(), Torneig.class);
-//                        } else {
-//                            t.get3_Equips().remove(
-//                                    equip
-//                            );
-//                            model.getClasseDAOTorneig().guarda(t);
-//                            vistaTorneig.getjTextField1().setText("");
-//                            carregaTaula((ArrayList) model.getClasseDAOTorneig().obtenLlista(), vistaTorneig.getjTable1(), Torneig.class);
-//                        }
-//                    } else {
-//                        JOptionPane.showMessageDialog(null, "Selecciona un torneig per afegir-li/borrar-li l'equip.");
-//                    }
-//
-//                }
 
             }
 
